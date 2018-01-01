@@ -11,6 +11,7 @@ libraryDependencies ++= Seq(
 //  ws,
 //  evolutions,
   "com.mohiva" %% "play-silhouette-password-bcrypt" % "5.0.0",
+  "com.mohiva" %% "play-silhouette-persistence" % "5.0.0",
   "org.postgresql" % "postgresql" % "9.4.1208"
 //  "io.getquill" %% "quill-async-postgres" % "1.1.0"
 //  "org.jsoup" % "jsoup" % "1.10.3"

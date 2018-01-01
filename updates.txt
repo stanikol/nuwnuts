@@ -1,7 +1,10 @@
-2017-12-30
-Starting project fromm seed https://github.com/adrianhurt/play-silhouette-credentials-seed/blob/master/build.sbt
-Moving it to modules/usr sub-project.
+2017-01-01
+Added DAO (using Quill-Postgres-Async) for usr layer.
+(DAOAuthTokenDb, DAOPasswordService, DAOUserDb)
 
 2017-12-31
-Change joda.time.DateTime in AuthToken to java.time.LocalDateTime.
-Plans to add database support to usr DAO.
+Change `joda.time.DateTime` in `AuthToken` to `java.time.LocalDateTime`.
+
+2017-12-30
+Starting project fromm seed https://github.com/adrianhurt/play-silhouette-credentials-seed/blob/master/build.sbt
+Moving it to separate sub-project module in `modules/usr`.
