@@ -1,0 +1,28 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET         /                                controllers.usr.ApplicationController.index
+GET         /signOut                         controllers.usr.ApplicationController.signOut
+GET         /authenticate/:provider          controllers.usr.SocialAuthController.authenticate(provider)
+
+GET         /signUp                          controllers.usr.SignUpController.view
+POST        /signUp                          controllers.usr.SignUpController.submit
+
+GET         /signIn                          controllers.usr.SignInController.view
+POST        /signIn                          controllers.usr.SignInController.submit
+
+GET         /password/forgot                 controllers.usr.ForgotPasswordController.view
+POST        /password/forgot                 controllers.usr.ForgotPasswordController.submit
+GET         /password/reset/:token           controllers.usr.ResetPasswordController.view(token: java.util.UUID)
+POST        /password/reset/:token           controllers.usr.ResetPasswordController.submit(token: java.util.UUID)
+GET         /password/change                 controllers.usr.ChangePasswordController.view
+POST        /password/change                 controllers.usr.ChangePasswordController.submit
+
+GET         /account/email/:email            controllers.usr.ActivateAccountController.send(email: String)
+GET         /account/activate/:token         controllers.usr.ActivateAccountController.activate(token: java.util.UUID)
+
+# Map static resources from the /public folder to the /assets URL path
+# GET         /assets/*file                    controllers.Assets.versioned(file)
+->          /webjars                         webjars.Routes
