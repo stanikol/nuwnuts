@@ -1,74 +1,69 @@
 package daos
 
-import java.nio.file.{ Files, Path, Paths }
+import models.Img
+import org.slf4j.LoggerFactory
 
-import com.typesafe.config.Config
-import model.Img
-import collection.JavaConverters._
-import scala.concurrent.{ ExecutionContext, Future }
+import scala.concurrent.Future
 
 object DAOImg {
-
   import psql._
 
   import concurrent.ExecutionContext.Implicits.global
 
-  def find(filename: String): Future[Option[Img]] = {
+  private val log = LoggerFactory.getLogger("img")
+
+  def insert(img: Img): Future[Int] = {
+    val q = quote(query[Img].insert(lift(img)))
+    psql.run(q)
+      .map { i =>
+        log.info(s"New image is inserted into db: ${img.filename}.")
+        i.toInt
+      }.recoverWith {
+        case e =>
+          val m = s"Error while inserting image `${img.filename}`: ${e.getMessage}!"
+          log.error(m)
+          Future.failed(new Exception(m))
+      }
+  }
+
+  def update(filename: String, bytes: Array[Byte]): Future[Int] = {
+    val q = quote(query[Img].filter(_.filename == lift(filename)).update(_.bytes -> lift(bytes)))
+    psql.run(q).map { result =>
+      log.info(s"Filename $filename was updated.")
+      result.toInt
+    }
+  }
+
+  def upsert(image: Img) = {
+    get(image.filename).flatMap {
+      case None => insert(image)
+      case Some(img) => update(img.filename, image.bytes)
+    }
+  }
+
+  def remove(filename: String) = {
+    val q = quote(query[Img].filter(_.filename == lift(filename)).delete)
+    psql.run(q).map { result =>
+      log.info(s"Filename $filename was deleted.")
+      result.toInt
+    }
+  }
+
+  def get(filename: String): Future[Option[Img]] = {
     val q = quote(query[Img].filter(_.filename == lift(filename)))
     psql.run(q).map(_.headOption)
   }
 
-  def remove(filename: String): Future[Unit] = {
-    find(filename).map {
-      case None => Future.failed(new Exception(s"Image $filename is not found !"))
-      case Some(img) =>
-        val q = quote(query[Img].filter(_.filename == lift(filename)).delete)
-        psql.run(q)
-    }
-  }
-
-  def upsert(img: Img): Future[Img] = {
-    find(img.filename).flatMap {
-      case None => insert(img)
-      case Some(foundImg) =>
-        val q = quote(query[Img].filter(_.filename == lift(img.filename)).update(lift(img.copy(id = foundImg.id))))
-        psql.run(q).map(_ => img)
-    }
-  }
-
-  def insert(img: Img): Future[Img] = {
-    val q = quote(query[Img].insert(lift(img)).returning(_.id))
-    psql.run(q).map(id => img.copy(id = id))
-  }
-
-  def insert(images: List[Img]): Future[List[Option[Long]]] = {
-    val q = quote(
-      liftQuery(images).foreach(img => query[Img].insert(img).returning(_.id))
-    )
+  def searchImg(filename: Option[String]): Future[List[Img]] = {
+    val likeFilename = filename.getOrElse("%")
+    val q = quote(query[Img].filter(_.filename like lift(likeFilename)))
     psql.run(q)
   }
 
-  /**
-   * Uses config to import images from directories
-   * Example config:
-   * ```img{
-   *   import-dirs = ["/Users/snc/Walnuts/oreh.od.ua/www/oreh.od.ua/assets/images", "/Users/snc/Walnuts/oreh.od.ua/www/oreh.od.ua/static/uploads"]
-   *   extensions = [".jpg", ".jpeg", ".png"]
-   * }```
-   * @param config
-   * @return
-   */
-  def importImages(config: Config) = {
-    val supportedExtensions: List[String] = config.getStringList("img.extensions").asScala.toList
-    val importFrom = config.getStringList("img.import-dirs").asScala.toList
-    val resultF = for { importDir <- importFrom } yield {
-      val imgFiles: Set[Path] = Files.walk(Paths.get(importDir)).iterator().asScala.toSet
-        .filter(f => f.toFile.isFile && supportedExtensions.exists(f.toString.endsWith(_)))
-      val images: List[Img] = imgFiles.map(imgPath => Img.fromPath(imgPath))
-        .filter(_.isSuccess).map(_.get).toList
-      DAOImg.insert(images)
-    }
-    Future.sequence(resultF)
+  def search(filename: Option[String]): Future[List[String]] = {
+    val likeFilename = filename.getOrElse("%")
+    val q = quote(query[Img].filter(_.filename like lift(likeFilename)).map(_.filename))
+    psql.run(q)
   }
 
 }

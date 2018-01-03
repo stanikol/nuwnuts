@@ -1,0 +1,14 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET         /               controllers.admin.ImgAdmin.test
+
+GET         /img/edit         controllers.admin.ImgAdmin.editImgGet(img: Option[String])
+POST        /img/edit         controllers.admin.ImgAdmin.editImgPost()
+###
+### # Map static resources from the /public folder to the /assets URL path
+### # GET         /assets/*file                    controllers.Assets.versioned(file)
+### ->          /webjars                         webjars.Routes
+###

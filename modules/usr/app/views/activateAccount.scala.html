@@ -10,10 +10,10 @@
     <fieldset class="col-md-6 col-md-offset-3">
         <legend>@messages("activate.account")</legend>
         <div class="info">
-            <p>@messages("activate.account.text1")</p>
-            <p><b>@email</b></p>
-            <p>@messages("activate.account.text2")</p>
-            <p>@Html(messages("activate.account.text3", controllers.usr.routes.ActivateAccountController.send(helper.urlEncode(email))))</p>
+            <imagePath>@messages("activate.account.text1")</imagePath>
+            <imagePath><b>@email</b></imagePath>
+            <imagePath>@messages("activate.account.text2")</imagePath>
+            <imagePath>@Html(messages("activate.account.text3", controllers.usr.routes.ActivateAccountController.send(helper.urlEncode(email))))</imagePath>
         </div>
     </fieldset>
 }

@@ -1,0 +1,1 @@
+update user_db set roles = '{admin}' where email = 'a@a.a';

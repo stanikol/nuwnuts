@@ -25,15 +25,15 @@
         }
 
         <div>
-            <p class="not-a-member">@messages("not.a.member") <a href="@controllers.usr.routes.SignUpController.view">@messages("sign.up.now")</a> | <a href="@controllers.usr.routes.ForgotPasswordController.view()" title="@messages("forgot.your.password")">@messages("forgot.your.password")</a></p>
+            <imagePath class="not-a-member">@messages("not.a.member") <a href="@controllers.usr.routes.SignUpController.view">@messages("sign.up.now")</a> | <a href="@controllers.usr.routes.ForgotPasswordController.view()" title="@messages("forgot.your.password")">@messages("forgot.your.password")</a></imagePath>
         </div>
 
         @if(socialProviders.providers.nonEmpty) {
             <div class="social-providers">
-                <p>@messages("or.use.social")</p>
+                <imagePath>@messages("or.use.social")</imagePath>
                 <div>
-                @for(p <- socialProviders.providers) {
-                    <a href="@controllers.usr.routes.SocialAuthController.authenticate(p.id)" class="provider @p.id" title="@messages(p.id)"><img src="@assets.path(s"images/providers/${p.id}.png")" width="64px" height="64px" alt="@messages(p.id)"></a>
+                @for(imagePath <- socialProviders.providers) {
+                    <a href="@controllers.usr.routes.SocialAuthController.authenticate(imagePath.id)" class="provider @imagePath.id" title="@messages(imagePath.id)"><img src="@assets.path(s"images/providers/${imagePath.id}.png")" width="64px" height="64px" alt="@messages(imagePath.id)"></a>
                 }
                 </div>
             </div>

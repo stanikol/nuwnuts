@@ -3,7 +3,7 @@ package models.daos
 import java.time.LocalDateTime
 import java.util.UUID
 
-import daos.model.AuthTokenDb
+import usr_storage.model.AuthTokenDb
 import models.AuthToken
 import models.daos.AuthTokenDAOImpl._
 import org.joda.time.DateTime
@@ -24,14 +24,14 @@ class AuthTokenDAOImpl extends AuthTokenDAO {
    * @return The found token or None if no token for the given ID could be found.
    */
   def find(id: UUID): Future[Option[AuthToken]] = //Future.successful(tokens.get(id))
-    daos.DAOAuthTokenDb.find(id).map(_.map(fromAuthTokenDb))
+    usr_storage.DAOAuthTokenDb.find(id).map(_.map(fromAuthTokenDb))
 
   /**
    * Finds expired tokens.
    *
    * @param dateTime The current date time.
    */
-  def findExpired(dateTime: LocalDateTime): Future[Seq[AuthToken]] = daos.DAOAuthTokenDb.findExpired(dateTime).map(_.map(fromAuthTokenDb))
+  def findExpired(dateTime: LocalDateTime): Future[Seq[AuthToken]] = usr_storage.DAOAuthTokenDb.findExpired(dateTime).map(_.map(fromAuthTokenDb))
   //    Future.successful {
   //    tokens.filter {
   //      case (_, token) =>
@@ -46,7 +46,7 @@ class AuthTokenDAOImpl extends AuthTokenDAO {
    * @return The saved token.
    */
   def save(token: AuthToken): Future[AuthToken] =
-    daos.DAOAuthTokenDb.save(AuthTokenDb(token.id, token.userID, token.expiry)).map(fromAuthTokenDb)
+    usr_storage.DAOAuthTokenDb.save(AuthTokenDb(token.id, token.userID, token.expiry)).map(fromAuthTokenDb)
   //  {
   //    tokens += (token.id -> token)
   //    Future.successful(token)
@@ -59,7 +59,7 @@ class AuthTokenDAOImpl extends AuthTokenDAO {
    * @return A future to wait for the process to be completed.
    */
   def remove(id: UUID): Future[Unit] =
-    daos.DAOAuthTokenDb.remove(id)
+    usr_storage.DAOAuthTokenDb.remove(id)
   //  {
   //    tokens -= id
   //    Future.successful(())

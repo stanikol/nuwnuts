@@ -3,7 +3,7 @@ package models.daos
 import java.util.UUID
 
 import com.mohiva.play.silhouette.api.LoginInfo
-import daos.model.{ LoginInfoDb, UserDb }
+import usr_storage.model.{ LoginInfoDb, UserDb }
 import models.User
 import models.daos.UserDAOImpl._
 
@@ -24,7 +24,7 @@ class UserDAOImpl extends UserDAO {
    * @return The found user or None if no user for the given login info could be found.
    */
   def find(loginInfo: LoginInfo): Future[Option[User]] =
-    daos.DAOUserDb.find(LoginInfoDb(loginInfo.providerID, loginInfo.providerKey)).map(_.map(fromUsr))
+    usr_storage.DAOUserDb.find(LoginInfoDb(loginInfo.providerID, loginInfo.providerKey)).map(_.map(fromUsr))
 
   //    Future.successful(
   //    users.find { case (_, user) => user.loginInfo == loginInfo }.map(_._2)
@@ -37,7 +37,7 @@ class UserDAOImpl extends UserDAO {
    * @return The found user or None if no user for the given ID could be found.
    */
   def find(userID: UUID): Future[Option[User]] =
-    daos.DAOUserDb.find(userID).map(_.map(fromUsr))
+    usr_storage.DAOUserDb.find(userID).map(_.map(fromUsr))
   //    Future.successful(users.get(userID))
 
   /**
@@ -53,7 +53,7 @@ class UserDAOImpl extends UserDAO {
 
   def saveToDb(user: User) = {
     val usr = getUsr(user)
-    daos.DAOUserDb.upsert(usr)
+    usr_storage.DAOUserDb.upsert(usr)
   }
 }
 
@@ -68,12 +68,12 @@ object UserDAOImpl {
   //  val users: mutable.HashMap[UUID, User] = mutable.HashMap()
 
   def getLogInfo(user: User): LoginInfoDb = {
-    daos.model.LoginInfoDb(user.loginInfo.providerID, user.loginInfo.providerKey)
+    usr_storage.model.LoginInfoDb(user.loginInfo.providerID, user.loginInfo.providerKey)
   }
 
   def getUsr(user: User): UserDb = {
     val logInfo: LoginInfoDb = getLogInfo(user)
-    daos.model.UserDb(user.userID, logInfo, user.firstName, user.lastName, user.fullName,
+    usr_storage.model.UserDb(user.userID, logInfo, user.firstName, user.lastName, user.fullName,
       user.email, user.avatarURL, user.activated, user.roles)
   }
 

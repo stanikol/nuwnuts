@@ -1,0 +1,1 @@
+insert into img values ('', bytea_import(''));

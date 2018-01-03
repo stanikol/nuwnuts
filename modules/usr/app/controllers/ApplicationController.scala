@@ -2,6 +2,7 @@ package controllers.usr
 
 import javax.inject.Inject
 
+import admin.AdminOnly
 import com.mohiva.play.silhouette.api.actions.SecuredRequest
 import com.mohiva.play.silhouette.api.{ LogoutEvent, Silhouette }
 import controllers.AssetsFinder

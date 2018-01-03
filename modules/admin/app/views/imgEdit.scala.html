@@ -1,0 +1,49 @@
+@import play.api.i18n.Messages
+@import play.api.mvc.RequestHeader
+@import org.webjars.play.WebJarsUtil
+@import controllers.AssetsFinder
+@import forms.ImgEditForm.FormData
+@import b3.vertical.fieldConstructor
+
+@(form: Form[FormData], foundImages: List[String])(implicit request: RequestHeader, messages: Messages, webJarsUtil: WebJarsUtil, assets: AssetsFinder)
+
+@main(messages("home.title"), None) {
+    @b3.formCSRF(action = controllers.admin.routes.ImgAdmin.editImgPost(), 'enctype -> "multipart/form-data") {
+        <div class="row">
+            <div class="col-sm-4">
+                @b3.text(form("filename"), '_label -> "Filename")
+                <label for = "file">Image</label>
+                <input type="file" name="file" id="file"/>
+                <button name="@form("action").name" value="save-image">SAVE IMAGE</button>
+                <button name="@form("action").name" value="delete-image">DELETE IMAGE</button>
+            </div>
+            <div class="col-sm-8">
+                @form("filename").value.map{ imgPath =>
+                    <img class="img-responsive" src="@controllers.img.routes.ImgController.getImg(imgPath)">
+                }
+            </div>
+        </div>
+
+
+
+
+        <div class="panel panel-default">
+            <div class="panel-heading">Search</div>
+            <div class="panel-body">
+                @b3.text(form("search"))
+                <button name="@form("action").name" value="search">SEARCH</button>
+                <button name="@form("action").name" value="select">SELECT</button>
+                <div class="row">
+                    @foundImages.map{ imgName =>
+                        <div class="col-sm-4 col-md-4 col-lg-4">
+                            <input type="radio" name="@form("selected-img").name" value="@imgName">
+                                <span class="text-overflow">@imgName</span>
+                                <img class="img-responsive" src="@controllers.img.routes.ImgController.getImg(imgName)"/>
+                            </input>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+}

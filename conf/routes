@@ -5,5 +5,10 @@
 # Home page
 -> 	/usr	usr.Routes
 
+-> 	/admin	admin.Routes
+
+
+-> 	/img	img.Routes
+
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file                    controllers.Assets.versioned(file)
