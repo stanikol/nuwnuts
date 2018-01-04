@@ -1,9 +1,7 @@
-import java.net.URLEncoder
+import java.nio.file.{Files, Paths}
+import collection.JavaConverters._
 
-URLEncoder.encode("%", "utf-8")
-
-val f = forms.ImgEditForm.form.fill(forms.ImgEditForm.FormData(Some("1"), Some("1"),Some("1"),Some("1")))
-f("action").label
-f("action").name
-f("action").value
-f("action").id
+val grab = "/Users/snc/scala/newnuts/grab/articles"
+Files.list(Paths.get(grab))
+    .filter(p => p.toFile.isDirectory && p.getFileName.toString.matches("\\d+"))
+  .iterator().asScala.toList.sorted.mkString("\n")

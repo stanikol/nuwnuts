@@ -20,4 +20,6 @@ object Dependencies {
 //  val bootstrap = "org.webjars" % "bootstrap" % "4.0.0-beta.3" exclude("org.webjars", "jquery")//"org.webjars" % "bootstrap" % "3.3.7-1" exclude("org.webjars", "jquery"),
   val bootstrap = "org.webjars" % "bootstrap" % "3.3.7-1" exclude("org.webjars", "jquery")
 
+  val jsoup = "org.jsoup" % "jsoup" % "1.11.2" // https://mvnrepository.com/artifact/org.jsoup/jsoup
+
 }

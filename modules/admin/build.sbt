@@ -12,8 +12,9 @@ libraryDependencies ++= Seq(
     , Dependencies.playBootstrap
     , Dependencies.bootstrap
     , jdbc
+    , Dependencies.jsoup
     , ehcache ,
-      "org.webjars" %% "webjars-play" % "2.6.1",
+"org.webjars" %% "webjars-play" % "2.6.1",
 //      "org.webjars" % "bootstrap" % "3.3.7-1" exclude("org.webjars", "jquery"),
       "org.webjars" % "jquery" % "3.2.1"
 )
