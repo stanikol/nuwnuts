@@ -3,12 +3,11 @@ package utils
 import java.nio.file.{ Files, Path, Paths }
 
 import akka.actor.ActorSystem
-import akka.stream.ActorMaterializer
+import akka.stream.{ ActorAttributes, ActorMaterializer, Supervision }
 import akka.stream.scaladsl.Source
 import com.typesafe.config.{ Config, ConfigFactory }
-import daos.DAOImg
+import daos.{ DAOImg, Img }
 import daos.DAOImg.{ insert, log }
-import daos.models.Img
 import org.slf4j.LoggerFactory
 
 import collection.JavaConverters._
@@ -31,13 +30,16 @@ object ImportImages {
     resultF.onComplete(_ => system.terminate())
     val result = Await.result(resultF, Duration.Inf)
     println(result)
+    system.terminate()
   }
 
   def importFiles(config: Config)(implicit
     executionContext: ExecutionContext,
     system: ActorSystem,
     mat: ActorMaterializer) = {
-    Source(readImagesForImport(config)).mapAsync(1)(insert(_)).runFold(0)(_ + _)
+    Source(readImagesForImport(config)).mapAsync(1)(insert(_))
+      .withAttributes(ActorAttributes.supervisionStrategy(Supervision.restartingDecider))
+      .runFold(0)(_ + _)
   }
 
   private def readImagesForImport(config: Config): List[Img] = {

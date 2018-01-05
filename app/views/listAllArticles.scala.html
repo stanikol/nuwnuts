@@ -1,0 +1,17 @@
+@import _root_.daos.models.Blog
+
+@(articles: List[Blog])
+@frontend("oreh.od.ua/Список статей"){
+    <div class="articles"><ul>
+        @for(article <- articles){
+            <li class="article">
+                <h2 class="art_title"><a href="@controllers.routes.ArticleController.showArticle(article.blogId)">@article.title</a></h2>
+                <div class="date"><p></p></div>
+                <div class="art_short">
+                    @article.shortText
+                </div>
+                <div class="clear"></div>
+            </li>
+        }
+    </ul></div>
+}

@@ -1,0 +1,22 @@
+@import _root_.daos.models.ItemInfo
+
+@(item: ItemInfo)
+@frontend(item.title.getOrElse("")){
+<div class="item">
+
+    <div id="item_img">
+        <img class="someitem" src="@controllers.img.routes.ImgController.getImg(item.img.getOrElse(""))" alt="">
+    </div>
+    <div id="item_desc">
+        <div id="item_title">@item.title</div><br>
+        <div id="cat">@item.category</div><br>
+        <a id="buy" href="/index.php/contacts/index">Купить</a><br><br>
+        <a id="various1" href="#inline1" class="call">ПОЗВОНИТЕ МНЕ</a><br>
+    </div>
+
+    <div class="clear"></div>
+
+    <div id="item_full">
+        @Html(item.html.getOrElse(""))
+    </div>
+}

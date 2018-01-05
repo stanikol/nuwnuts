@@ -1,0 +1,16 @@
+@import _root_.daos.models.Blog
+
+@(blog: Blog)
+@frontend(blog.title){
+    <div class="item arts">
+
+        <div style="text-align: center; width: 100%" id="item_title">@blog.title</div><br>
+
+        <div class="clear"></div>
+
+        <div id="item_full">
+            @Html(blog.html)
+        </div>
+
+    </div>
+}

@@ -1,0 +1,25 @@
+
+@(items: List[_root_.daos.models.ItemInfo])
+
+@frontend("Сорта орехов"){
+<div id="lefts">
+    <div class="category">
+        <!--<div class="category_name">Селекция Приднестровской опытной станции, г. Черновцы</div>-->
+        @items.map(i =>(i.categorySortOrder, i.category)).toSet.toList.sortBy{(_:(Option[String], String))._1.getOrElse("")}.map{ case (sortOrder: Option[String], category: String) =>
+            <ul>
+                <div class="category_name">@category</div>
+                @items.filter(_.category == category).sortBy(_.sortOrder).map{item =>
+                    <li>
+                        <a href="@controllers.routes.ItemController.showItem(item.id)">
+                            <div style="background: url(@controllers.img.routes.ImgController.getImg(item.img.getOrElse(""))) center no-repeat; background-size:162px 162px;" class="cat_img">
+                                <img width="162px" src="/img/imgmaskt.png" alt="">
+                            </div>
+                        </a><br><br>
+                        <a class="title" title="@item.title" href="@controllers.routes.ItemController.showItem(item.id)">@item.title</a>
+                    </li>
+                }
+            </ul>
+            <div class="clear"></div>
+        }
+</div>
+}

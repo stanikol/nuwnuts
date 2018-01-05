@@ -1,12 +1,9 @@
 drop table if exists img;
 
 create table if not exists img(
-    id          serial unique,
+    id          serial primary key,
     filename    varchar not null unique,
-    alt         varchar default null,
-    album_name  varchar default null,
-    description varchar default null,
-    image       bytea not null
+    bytes       bytea not null
     ---------------------------
 --    constraint unique_filename_album_name unique (filename, album_name)
 );

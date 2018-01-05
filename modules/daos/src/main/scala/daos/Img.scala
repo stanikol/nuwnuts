@@ -1,4 +1,4 @@
-package daos.models
+package daos
 
 import java.nio.file.{ Files, Path }
 
@@ -11,4 +11,6 @@ object Img {
     val bytes = Files.readAllBytes(imagePath)
     new Img(filename, bytes)
   }
+
+  def empty = Img("", Array.empty)
 }

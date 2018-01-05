@@ -1,6 +1,5 @@
 package daos
 
-import models.Img
 import org.slf4j.LoggerFactory
 
 import scala.concurrent.Future

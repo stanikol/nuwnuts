@@ -1,0 +1,66 @@
+@(title: String = "", keywords: List[String] = List.empty)(content: Html)
+<html>
+<head>
+    <title>@title</title>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" href="/assets/styles/reset.css"/>
+    <link rel="stylesheet" href="/assets/styles/style.css"/>
+    <link rel="stylesheet" href="/assets/javascripts/fancybox/jquery.fancybox.css"/>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="/assets/javascripts/fancybox/jquery.fancybox.js"></script>
+    <script type="text/javascript" src="/assets/javascripts/PIE.js"></script>
+    <script type="text/javascript">
+        var baseurl = 'http://oreh.od.ua';
+        $(document).ready(function(){
+            $('.addfeedb').bind('click', function(){
+if($('.aname').val() != '' &&  $('.email').val() != '' && $('.text').val() !=''){
+  $.post(baseurl+"/article/addcomment/id/", { id: $('.id').val(), name: $('.aname').val(), email: $('.email').val(), text: $('.text').val()},
+                    function(data){
+                           window.location.reload();
+                    });
+ }
+
+                return false;
+            });
+
+        });
+    </script>
+</head>
+<body>
+<div id="bg">
+    <img src="/assets/images/light.png" alt="">
+</div>
+<div id="container">
+
+    <div id="header">
+        <div id="menu">
+            <div id="logo"></div>
+            <ul>
+                <li ><a href="@controllers.routes.HomeController.showHomePage">ГЛАВНАЯ</a></li>
+                <li ><a href="@controllers.routes.ItemController.listAllItems">СОРТА ОРЕХОВ</a></li>
+                <li><a class="center_li" href="/">&nbsp;</a></li>
+                <li><a href="@controllers.routes.ArticleController.listAllArticles">СТАТЬИ</a></li>
+                <li ><a href="/contacts">КОНТАКТЫ</a></li>
+            </ul>
+            <div class="clear"></div>
+        </div>
+    </div>
+
+    @content
+
+    <div class="clear"></div>
+    <div class="empty"></div>
+    <div class="clear"></div>
+</div>
+
+
+<div class="footer">
+    <h5>ООО «Тимирязевское». Все права защищены</h5><br>
+    <p style="font-size:11px; text-align:center"><a href="" title="Разработка - SNC">Разработка - SNC</a></p>
+</div>
+
+</body>
+</html>

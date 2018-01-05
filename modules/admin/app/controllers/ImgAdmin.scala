@@ -12,8 +12,7 @@ import admin.AdminOnly
 import akka.http.scaladsl.model.HttpHeader.ParsingResult.Ok
 import com.mohiva.play.silhouette
 import controllers.AssetsFinder
-import daos.DAOImg
-import daos.models.Img
+import daos.{ DAOImg, Img }
 import play.api.cache.AsyncCacheApi
 import play.api.i18n.I18nSupport
 import play.api.mvc.{ AbstractController, Action, ControllerComponents }
@@ -23,6 +22,7 @@ import org.webjars.play.WebJarsUtil
 import utils.auth.DefaultEnv
 import forms.ImgEditForm._
 import views.html.imgEdit
+
 import scala.concurrent.{ ExecutionContext, Future }
 
 class ImgAdmin @Inject() (

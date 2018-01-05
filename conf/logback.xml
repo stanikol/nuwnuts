@@ -48,4 +48,9 @@
         <appender-ref ref="STDOUT" />
     </logger>
 
+    <logger name="item" level="DEBUG">
+        <appender-ref ref="FILE" />
+        <appender-ref ref="STDOUT" />
+    </logger>
+
 </configuration>

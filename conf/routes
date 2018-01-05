@@ -2,13 +2,20 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-# Home page
--> 	/usr	usr.Routes
+GET /                                   controllers.HomeController.showHomePage
 
--> 	/admin	admin.Routes
+GET /article                            controllers.ArticleController.listAllArticles
+GET /index.php/article/view/id/:blogId  controllers.ArticleController.showArticle(blogId: Long)
+
+GET /items                              controllers.ItemController.listAllItems
+GET /index.php/items/view/id/:itemId    controllers.ItemController.showItem(itemId: Long)
+
+-> 	/usr	                            usr.Routes
+
+-> 	/admin	                            admin.Routes
 
 
--> 	/img	img.Routes
+-> 	/img	                            img.Routes
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file                    controllers.Assets.versioned(file)

@@ -17,7 +17,7 @@ object CreateDb {
 
   private def createDb(config: Config)(implicit executionContext: ExecutionContext) = {
     classOf[org.postgresql.Driver]
-    val con_str = "jdbc:" + config.getString("usr_storage.url")
+    val con_str = "jdbc:" + config.getString("daos.url")
     val conn = DriverManager.getConnection(con_str)
     println(s"Connected to $con_str")
     try {

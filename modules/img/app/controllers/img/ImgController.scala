@@ -4,8 +4,7 @@ import java.net.URLDecoder
 import javax.inject.Inject
 
 import controllers.AssetsFinder
-import daos.DAOImg
-import daos.models.Img
+import daos.{ DAOImg, Img }
 import org.slf4j.LoggerFactory
 import play.api.cache.{ AsyncCacheApi, Cached }
 import play.api.i18n.I18nSupport
@@ -25,14 +24,10 @@ class ImgController @Inject() (
 
   def getImg(f: String) = Action.async { implicit request =>
     val filename = URLDecoder.decode(f, "utf-8")
-    cache.getOrElseUpdate[Option[Img]](s"img.$filename") {
-      logger.debug("Saving `{}` to cache ...", filename)
-      DAOImg.get(filename)
-    }.map { imgOpt: Option[Img] =>
-      imgOpt.map(i => Ok(i.bytes).as(BINARY)).getOrElse {
-        println(s"NO IMAGE FOUND! $filename")
-        Ok(s"Not found `$filename` !")
-      }
-    }
+    val cacheKey = s"img.$filename"
+    cache.getOrElseUpdate[Array[Byte]](cacheKey) {
+      logger.trace("Saving `{}` to cache ...", filename)
+      DAOImg.get(filename).map(_.map(_.bytes).get)
+    }.map { Ok(_).as(BINARY) }
   }
 }
